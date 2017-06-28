@@ -1,0 +1,50 @@
+{% include '../partials/head.html' %}
+<div id="wrapper">
+    <div id="form_box">
+        <form id="register" action="/process_register" method="post">
+            {% csrf_token %}
+            <div class="form_group">
+                <label for="f_name">First Name: </label>
+                <input type="text" id="f_name" name="f_name" placeholder="First Name"
+                {% if 'data' in request.session %}
+                value="{{ session.data.first_name }}"
+                {% endif %}
+                >
+            </div>
+            <div class="form_group">
+                <label for="l_name">Last Name: </label>
+                <input type="text" id="l_name" name="l_name" placeholder="Last Name"
+                {% if 'data' in request.session %}
+                value="{{ request.session.data.last_name }}"
+                {% endif %}
+                >
+            </div>
+            <div class="form_group">
+                <label for="email">E-mail: </label>
+                <input type="text" id="email" name="email" placeholder="E-mail"
+                {% if 'data' in request.session %}
+                value="{{ request.session.data.email }}"
+                {% endif %}
+                >
+            </div>
+            <div class="form_group">
+                <label for="birthdate">Birthdate: </label>
+                <input type="Date" id="birthdate" name="birthdate" placeholder="Birthdate"
+                {% if 'data' in request.session %}
+                value="{{ request.session.data.birthdate }}"
+                {% endif %}
+                >
+            </div>
+            <div class="form_group">
+                <label for="password">Password: </label>
+                <input type="password" id="password" name="password" placeholder="Password">
+            </div>
+            <div class="form_group">
+                <label for="confirm_password">Confirm Password: </label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password">
+            </div>
+            <input id="survey" type="submit" name="submit" value="Register">
+        </form>
+    </div>
+</div>
+{% include '../partials/foot.html' %}
