@@ -20,18 +20,10 @@
                 >
             </div>
             <div class="form_group">
-                <label for="email">E-mail: </label>
-                <input type="text" id="email" name="email" placeholder="E-mail"
+                <label for="username">Username: </label>
+                <input type="text" id="username" name="username" placeholder="Username"
                 {% if 'data' in request.session %}
-                value="{{ request.session.data.email }}"
-                {% endif %}
-                >
-            </div>
-            <div class="form_group">
-                <label for="birthdate">Birthdate: </label>
-                <input type="Date" id="birthdate" name="birthdate" placeholder="Birthdate"
-                {% if 'data' in request.session %}
-                value="{{ request.session.data.birthdate }}"
+                value="{{ request.session.data.username }}"
                 {% endif %}
                 >
             </div>

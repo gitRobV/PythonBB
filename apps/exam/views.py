@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
-from .models import User
+from .models import User, Travel
 
 # Create your views here.
 
@@ -15,13 +15,8 @@ def index(request):
     # If user status not set in Session redirect to login.
     if 'user_status' not in request.session or request.session['user_status'] != 'Authenticated':
         return redirect('/login')
-    # Else get User for user_id in session
-    else:
-        data = {
-        'user': User.objects.get(id=request.session['user_id'])
-        }
     # Render index.html
-    return render(request, 'exam/index.html', data)
+    return redirect('/travels')
 # Login Get Route
 def login(request):
     return render(request, 'exam/login.html')
@@ -74,3 +69,78 @@ def process(request):
 def logout(request):
     request.session.flush()
     return redirect('/')
+
+
+def travels(request):
+    if 'user_status' not in request.session or request.session['user_status'] != 'Authenticated':
+        return redirect('/login')
+    # Else get User for user_id in session
+    else:
+        data = {
+        'user': User.objects.get(id=request.session['user_id']),
+        'travel_list' : Travel.objects.filter(user__id=request.session['user_id']),
+        'other_travels' : Travel.objects.all().exclude(planner__id=request.session['user_id'])
+        }
+    return render(request, 'exam/travels/index.html', data)
+
+def add_travels(request):
+    if 'user_status' not in request.session or request.session['user_status'] != 'Authenticated':
+        return redirect('/login')
+    # Else get User for user_id in session
+
+    return render(request, 'exam/travels/add_travel.html')
+
+def create_travels(request):
+    if request.method == 'POST':
+        post_data = request.POST.copy()
+        validated = Travel.objects.validate_travel_info(post_data)
+
+        if len(validated.errors) > 0:
+            for err in validated.errors:
+                messages.error(request, err)
+            return redirect('/travels/add')
+        else:
+            created_travel = Travel.objects.create_travel(validated.data, request.session['user_id'])
+            if created_travel != False:
+                messages.success(request, 'You have successfully added your travel plans. Your Travel ID is: ' + str(created_travel.id))
+            else:
+                messages.error(request, 'There was an error with adding your travel info to the DB')
+        return redirect('/travels')
+    # messages.error(request, 'Please fillout the form completely')
+    return redirect('/travels/add')
+
+def show_travels(request,travel_id):
+    if 'user_status' not in request.session or request.session['user_status'] != 'Authenticated':
+        return redirect('/login')
+    # Else get User for user_id in session
+    else:
+        data = {
+        'user': User.objects.get(id=request.session['user_id']),
+        'travel' : Travel.objects.get(id=travel_id)
+        }
+
+        return render(request, 'exam/travels/show.html', data)
+
+def join_travels(request,travel_id):
+    if 'user_status' not in request.session or request.session['user_status'] != 'Authenticated':
+        return redirect('/login')
+    # Else get User for user_id in session
+    else:
+        data = {
+        'user': User.objects.get(id=request.session['user_id']),
+        'travel' : Travel.objects.get(id=travel_id)
+        }
+
+        return render(request, 'exam/travels/join.html', data)
+
+def create_join(request):
+    if request.method == 'POST':
+        post_data = request.POST.copy()
+        validated = Travel.objects.validate_join(post_data)
+
+        if len(validated['errors']) > 0:
+            for err in validated.errors:
+                messages.error(request, err)
+    else:
+        messages.error(request, 'There was an error with the method of your request')
+    return redirect('/travels')

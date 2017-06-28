@@ -1,0 +1,33 @@
+{% include '../../partials/head.html' %}
+<div id="wrapper">
+    <div class="profile">
+        <span class="default_img"><i class="fa fa-user" aria-hidden="true"></i></span>
+        <div class="info">
+            <h2>Welcome Back {{ user.f_name }}</h2>
+        </div>
+    </div>
+    <div id="content">
+        <div class="user_trips">
+            <h3>Your Trip Information</h3>
+            <p>Planned By: {{ travel.planner.f_name }} {{ travel.planner.l_name }}</p>
+            <p>Description: {{ travel.description }}</p>
+            <p>Travel Date From: {{ travel.date_from }}</p>
+            <p>Travel Date To: {{ travel.date_to }}</p>
+
+        </div>
+        <div class="other_trips">
+            <h3>Other User's joining the Trip:</h3>
+            <ul>
+                {% for traveler in travel.user.all %}
+                {% if traveler != user  %}
+                    <li>{{ traveler.f_name }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="add_travel">
+            <a href="/travels/add">Add Travel Plan</a>
+        </div>
+    </div>
+</div>
+{% include '../../partials/foot.html' %}

@@ -19,7 +19,8 @@ class Validation(object):
         self.pw = []
         self.email = []
         self.text = []
-        self.birthdate = None
+        self.user = []
+        # self.birthdate = None
         self.errors = []
         self.data = {}
 
@@ -30,10 +31,12 @@ class Validation(object):
                 self.email.append(input)
             elif input[0] == 'pass_check':
                 self.pw.append(input)
-            elif input[0] == 'text':
+            elif input[0] == 'text_check':
                 self.text.append(input)
-            elif input[0] == 'birthdate':
-                self.birthdate = input
+            # elif input[0] == 'birthdate':
+            #     self.birthdate = input
+            elif input[0] == 'user_check':
+                self.user.append(input)
             else:
                 self.errors.append(
                     input[1] + " has errors: " + input[0] + " is not a supported method")
@@ -42,9 +45,10 @@ class Validation(object):
         self.email_check(self.email)
         self.pass_check(self.pw)
         self.text_check(self.text)
-        self.birthdate_check(self.birthdate)
+        # self.birthdate_check(self.birthdate)
+        self.user_check(self.user)
 
-    def len_check(self, str, min=0, max=140):
+    def len_check(self, str, min=3, max=140):
         if len(str) == 0:
             return False
         if len(str) > min and len(str) < max:
@@ -52,18 +56,31 @@ class Validation(object):
         else:
             return False
 
-    def birthdate_check(self, birthdate):
-        try:
-            bday = datetime.datetime.strptime(birthdate[1], '%Y-%m-%d')
-            today = datetime.datetime.today()
-            age = relativedelta(today, bday)
-            self.data['age'] = age
-            self.data[birthdate[0]] = birthdate[1]
-            if age.years < 18:
-                self.errors.append("Please return when you meet the age requirement")
-        except:
-            self.errors.append("There was an error processing your age. Please try again")
-            self.data['age'] = birthdate
+    def user_check(self, username_list):
+        for user in username_list:
+            if self.len_check(user[2]):
+                USER_REGEX = re.compile(r'^[a-z0-9_]+$')
+                if not USER_REGEX.match(user[2]):
+                    self.errors.append(
+                        user[2] + " is not a valid username")
+                else:
+                    self.data[user[1]] = user[2]
+            else:
+                self.errors.append("Please provide a valide username")
+
+
+    # def birthdate_check(self, birthdate):
+    #     try:
+    #         bday = datetime.datetime.strptime(birthdate[1], '%Y-%m-%d')
+    #         today = datetime.datetime.today()
+    #         age = relativedelta(today, bday)
+    #         self.data['age'] = age
+    #         self.data[birthdate[0]] = birthdate[1]
+    #         if age.years < 18:
+    #             self.errors.append("Please return when you meet the age requirement")
+    #     except:
+    #         self.errors.append("There was an error processing your age. Please try again")
+    #         self.data['age'] = birthdate
 
     def email_check(self, email_list):
         for email in email_list:

@@ -1,0 +1,41 @@
+{% include '../../partials/head.html' %}
+<div id="wrapper">
+    <div class="profile">
+        <span class="default_img"><i class="fa fa-user" aria-hidden="true"></i></span>
+        <div class="info">
+            <h2>Welcome Back {{ user.f_name }}</h2>
+        </div>
+    </div>
+    <div id="content">
+        <div class="user_trips">
+            <h3>Your Trip Information</h3>
+
+            <form action="/travels/create_join" method="post">
+                <h4>Confirm you want to add this trip to your travels</h4>
+                <p>Planned By: {{ travel.planner.f_name }} {{ travel.planner.l_name }}</p>
+                <p>Description: {{ travel.description }}</p>
+                <p>Travel Date From: {{ travel.date_from }}</p>
+                <p>Travel Date To: {{ travel.date_to }}</p>
+                {% csrf_token %}
+                <input type="hidden" name="travel_id" value="{{ travel.id }}">
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+                <input type="submit" name="submit" value="Add To My Travels">
+            </form>
+
+        </div>
+        <div class="other_trips">
+            <h3>Other User's joining the Trip:</h3>
+            <ul>
+                {% for traveler in travel.user.all %}
+                {% if traveler != travel.planner %}
+                    <li>{{ traveler.f_name }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="add_travel">
+            <a href="/travels/add">Add New Travel Plan</a>
+        </div>
+    </div>
+</div>
+{% include '../../partials/foot.html' %}

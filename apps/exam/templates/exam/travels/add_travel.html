@@ -1,0 +1,70 @@
+{% include '../../partials/head.html' %}
+<div id="wrapper">
+    <div id="content">
+        <div class="add_travel">
+            <h3>Add a Trip</h3>
+            <form action="/travels/create" method="post">
+                {% csrf_token %}
+                <div class="form_group">
+                    <label for="destination">Destination: </label>
+                    <input type="text" id="destination" name="destination" placeholder="Destination"
+                    {% if 'data' in request.session %}
+                    value="{{ session.data.destination }}"
+                    {% endif %}
+                    >
+                </div>
+                <div class="form_group">
+                    <label for="description">Description: </label>
+                    <input type="text" id="description" name="description" placeholder="Description"
+                    {% if 'data' in request.session %}
+                    value="{{ session.data.description }}"
+                    {% endif %}
+                    >
+                </div>
+                <div class="form_group">
+                    <label for="date_from">Travel Date From: </label>
+                    <input type="date" id="date_from" name="date_from"
+                    {% if 'data' in request.session %}
+                    value="{{ session.data.date_from }}"
+                    {% endif %}
+                    >
+                </div>
+                <div class="form_group">
+                    <label for="date_to">Travel Date To: </label>
+                    <input type="date" id="date_to" name="date_to"
+                    {% if 'data' in request.session %}
+                    value="{{ session.data.date_to }}"
+                    {% endif %}
+                    >
+                </div>
+                <input type="submit" name="submit" value="Add">
+            </form>
+
+        </div>
+        <div class="other_trips">
+            <h3>Other User's Travel Plans</h3>
+            <table>
+                <tr>
+                    <thead>
+                        <th>Name</th>
+                        <th>Destination</th>
+                        <th>Travel Start Date</th>
+                        <th>Travel End Date</th>
+                        <th>Do You Want to Join?</th>
+                    </thead>
+                </tr>
+                <tr>
+                    <td><a href="#">Sandra V</a></td>
+                    <td><a href="#">Paris France</a></td>
+                    <td>May 26 2015</td>
+                    <td>May 30 2015</td>
+                    <td><a href="#">Join</a></td>
+                </tr>
+            </table>
+        </div>
+        <div class="add_travel">
+            <a href="/travels/add">Add Travel Plan</a>
+        </div>
+    </div>
+</div>
+{% include '../../partials/foot.html' %}

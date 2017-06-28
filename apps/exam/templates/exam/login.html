@@ -4,10 +4,10 @@
                 <form id="login" action="/authenticate" method="post">
                     {% csrf_token %}
                     <div class="form_group">
-                        <label for="email">E-mail: </label>
-                        <input type="text" id="email" name="email" placeholder="E-mail"
+                        <label for="username">Username: </label>
+                        <input type="text" id="username" name="username" placeholder="Username"
                         {% if 'data' in request.session %}
-                        value="{{ request.session.data.email }}"
+                        value="{{ request.session.data.username }}"
                         {% endif %}
                         >
                     </div>

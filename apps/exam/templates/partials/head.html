@@ -24,13 +24,14 @@
         <header>
             <nav>
                 <ul>
+                    <li><a href="/"><i class="fa fa-coffee" aria-hidden="true"></i><span class="nav_bar">Wake Up</span></a></li>
                     {% if 'user_id' not in request.session %}
                         <li><a href="/register"><i class="fa fa-id-badge" aria-hidden="true"></i><span class="nav_bar">Register</span></a></li>
                         <li><a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i><span class="nav_bar">Log In</span></a></li>
                     {% else %}
+                        <li><a href="/travels"><i class="fa fa-plane" aria-hidden="true"></i><span class="nav_bar">Travel Logs</span></a></li>
                         <li><a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i><span class="nav_bar">Log Out</span></a></li>
                     {% endif %}
-                        <li><a href="/"><i class="fa fa-coffee" aria-hidden="true"></i><span class="nav_bar">Wake Up</span></a></li>
                 </ul>
             </nav>
         </header>

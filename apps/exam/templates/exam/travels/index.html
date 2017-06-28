@@ -1,0 +1,64 @@
+{% include '../../partials/head.html' %}
+<div id="wrapper">
+    <div class="profile">
+        <span class="default_img"><i class="fa fa-user" aria-hidden="true"></i></span>
+        <div class="info">
+            <h2>Welcome Back {{ user.f_name }}</h2>
+        </div>
+    </div>
+    <div id="content">
+        <div class="user_trips">
+            <h3>Your Trip Schedules</h3>
+            <table>
+                <tr>
+                    <thead>
+                        <th>Destination</th>
+                        <th>Travel Start Date</th>
+                        <th>Travel End Date</th>
+                        <th>Plan</th>
+                    </thead>
+                </tr>
+
+                {% if travel_list %}
+                {% for travel in travel_list %}
+                <tr>
+                    <td><a href="/travels/destination/{{ travel.id }}">{{travel.destination}}</a></td>
+                    <td>{{travel.date_from}}</td>
+                    <td>{{travel.date_to}}</td>
+                    <td>{{travel.description}}</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+        <div class="other_trips">
+            <h3>Other User's Travel Plans</h3>
+            <table>
+                <tr>
+                    <thead>
+                        <th>Name</th>
+                        <th>Destination</th>
+                        <th>Travel Start Date</th>
+                        <th>Travel End Date</th>
+                        <th>Do You Want to Join?</th>
+                    </thead>
+                </tr>
+                {% for travel in other_travels %}
+                {% if user not in travel.user.all %}
+                <tr>
+                    <td>{{travel.planner.f_name}}</td>
+                    <td><a href="/travels/destination/{{ travel.id }}">{{travel.destination}}</a></td>
+                    <td>{{travel.date_from}}</td>
+                    <td>{{travel.date_to}}</td>
+                    <td><a href="/travels/join/{{ travel.id }}">Join</a></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+        <div class="add_travel">
+            <a href="/travels/add">Add Travel Plan</a>
+        </div>
+    </div>
+</div>
+{% include '../../partials/foot.html' %}
